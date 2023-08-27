@@ -1,36 +1,79 @@
-import logo from '../../img/S7 Logo.png';
+import { format } from 'date-fns';
 
 import classes from './ticket.module.scss';
 
-export const Ticket = () => {
+export const Ticket = ({ item }) => {
+  const numberWithSpaces = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  };
+
+  const declination = (number, words) =>
+    words[number % 100 > 4 && number % 100 < 20 ? 2 : [2, 0, 1, 1, 1, 2][number % 10 < 5 ? Math.abs(number) % 10 : 5]];
+
+  const timeFormatDuration = (x) => {
+    let hours = Math.floor(Number(x) / 60);
+    let minutes = Number(x) - hours * 60;
+    const result = `${hours}ч ${minutes}м`;
+    return result;
+  };
+
+  const dateDeparture = new Date(item.segments[0].date);
+  const dateDeparture2 = new Date(item.segments[1].date);
+
+  const dateArrival = new Date(item.segments[0].date).setMinutes(
+    dateDeparture.getMinutes() + item.segments[0].duration
+  );
+  const dateArrival2 = new Date(item.segments[1].date).setMinutes(
+    dateDeparture.getMinutes() + item.segments[1].duration
+  );
+
   return (
     <article className={classes.ticket}>
       <header className={classes.ticket__header}>
-        <span className={classes.ticket__price}>13 400 Р</span>
-        <img src={logo} alt="S7 Logo" className={classes.ticket__img} />
+        <span className={classes.ticket__price}>{numberWithSpaces(item.price)} Р</span>
+        <img src={`https://pics.avs.io/99/36/${item.carrier}.png`} alt="airline logo" className={classes.ticket__img} />
       </header>
       <div className={classes.ticket__content}>
         <div className={classes.trip}>
           <div className={classes.trip__item}>
-            <p className={classes.trip__header}>MOW - HKT</p>
-            <p className={classes.trip__content}>10:45 - 08:00</p>
-            <br></br>
-            <p className={classes.trip__header}>MOW - HKT</p>
-            <p className={classes.trip__content}>11:20 - 00:50</p>
+            <p className={classes.trip__header}>
+              {item.segments[0].origin} - {item.segments[0].destination}
+            </p>
+            <p className={classes.trip__content}>
+              {`${format(dateDeparture, 'HH:mm')}`} - {`${format(dateArrival, 'HH:mm')}`}
+            </p>
           </div>
           <div className={classes.trip__item}>
-            <p className={classes.trip__header}>В ПУТИ</p>
-            <p className={classes.trip__content}>21ч 15м</p>
-            <br></br>
-            <p className={classes.trip__header}>В ПУТИ</p>
-            <p className={classes.trip__content}>13ч 30м</p>
+            <p className={classes.trip__header}>в пути</p>
+            <p className={classes.trip__content}>{timeFormatDuration(item.segments[0].duration)}</p>
           </div>
           <div className={classes.trip__item}>
-            <p className={classes.trip__header}>2 пересадки</p>
-            <p className={classes.trip__content}>HKG, JNB</p>
-            <br></br>
-            <p className={classes.trip__header}>1 пересадка</p>
-            <p className={classes.trip__content}>HKG</p>
+            <p className={classes.trip__header}>{`${
+              item.segments[0].stops.length > 0 ? item.segments[0].stops.length : 'Без'
+            } ${declination(item.segments[0].stops.length, ['пересадка', 'пересадки', 'пересадок'])}`}</p>
+            <p className={classes.trip__content}>{item.segments[0].stops.join(', ')}</p>
+          </div>
+        </div>
+      </div>
+      <div className={classes.ticket__content}>
+        <div className={classes.trip}>
+          <div className={classes.trip__item}>
+            <p className={classes.trip__header}>
+              {item.segments[1].origin} - {item.segments[1].destination}
+            </p>
+            <p className={classes.trip__content}>
+              {`${format(dateDeparture2, 'HH:mm')}`} - {`${format(dateArrival2, 'HH:mm')}`}
+            </p>
+          </div>
+          <div className={classes.trip__item}>
+            <p className={classes.trip__header}>в пути</p>
+            <p className={classes.trip__content}>{timeFormatDuration(item.segments[1].duration)}</p>
+          </div>
+          <div className={classes.trip__item}>
+            <p className={classes.trip__header}>{`${
+              item.segments[1].stops.length > 0 ? item.segments[1].stops.length : 'Без'
+            } ${declination(item.segments[1].stops.length, ['пересадка', 'пересадки', 'пересадок'])}`}</p>
+            <p className={classes.trip__content}>{item.segments[1].stops.join(', ')}</p>
           </div>
         </div>
       </div>

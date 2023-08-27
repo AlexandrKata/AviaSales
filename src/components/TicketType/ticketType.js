@@ -5,10 +5,8 @@ import { setTicketType } from '../../redux/filtersSlice';
 import classes from './ticketType.module.scss';
 
 export const TicketType = () => {
-  const types = useSelector((state) => state.filters.ticketsType);
+  const types = useSelector((state) => state.root.filters.types);
   const dispatch = useDispatch();
-
-  console.log(types);
 
   return (
     <div className={classes.ticketTypes}>
@@ -17,7 +15,7 @@ export const TicketType = () => {
         name="radio"
         className={classes.ticketTypes__radio}
         id="cheap"
-        onChange={() => dispatch(setTicketType('cheap'))}
+        onChange={() => dispatch(setTicketType(types.cheap))}
       />
       <label htmlFor="cheap" className={classes.ticketTypes__label}>
         Самый дешевый
@@ -27,7 +25,7 @@ export const TicketType = () => {
         name="radio"
         className={classes.ticketTypes__radio}
         id="fast"
-        onChange={() => dispatch(setTicketType('fast'))}
+        onChange={() => dispatch(setTicketType(types.fast))}
       />
       <label htmlFor="fast" className={[classes.ticketTypes__label, classes.bordered].join(' ')}>
         Самый быстрый
@@ -37,7 +35,7 @@ export const TicketType = () => {
         name="radio"
         className={classes.ticketTypes__radio}
         id="optimal"
-        onChange={() => dispatch(setTicketType('optimal'))}
+        onChange={() => dispatch(setTicketType(types.optimal))}
       />
       <label htmlFor="optimal" className={classes.ticketTypes__label}>
         Оптимальный

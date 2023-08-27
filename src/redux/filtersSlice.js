@@ -1,44 +1,44 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const type = {
-  cheap: 'cheap',
-  fast: 'fast',
-  optimal: 'optimal',
-};
-
 const initialState = {
   all: false,
   nonStop: false,
   oneTransplant: false,
   twoTransplant: false,
   threeTransplant: false,
-  ticketsType: type,
+  types: { cheap: 'cheap', fast: 'fast', optimal: 'optimal' },
+  ticketsType: '',
 };
 
-export const sidebarSlice = createSlice({
+export const filtersSlice = createSlice({
   name: 'sideBar',
   initialState,
   reducers: {
-    toggleFilters: (state, action) => {
-      const filter = action.payload;
-      if (filter === 'all') {
-        state.all = !state[filter];
-        state.nonStop = !!state[filter];
-        state.oneTransplant = !!state[filter];
-        state.twoTransplant = !!state[filter];
-        state.threeTransplant = !!state[filter];
-      } else {
-        state[filter] = !state[filter];
-        state.all = state[false];
-      }
+    all: (state, action) => {
+      state.all = !action.payload;
+      state.nonStop = !action.payload;
+      state.oneTransplant = !action.payload;
+      state.twoTransplant = !action.payload;
+      state.threeTransplant = !action.payload;
+    },
+    nonStop: (state, action) => {
+      state.nonStop = !action.payload;
+    },
+    oneTransplant: (state, action) => {
+      state.oneTransplant = !action.payload;
+    },
+    twoTransplant: (state, action) => {
+      state.twoTransplant = !action.payload;
+    },
+    threeTransplant: (state, action) => {
+      state.threeTransplant = !action.payload;
     },
     setTicketType: (state, action) => {
-      console.log(state, action);
       state.ticketsType = action.payload;
     },
   },
 });
 
-export const { toggleFilters, setTicketType } = sidebarSlice.actions;
+export const { all, nonStop, oneTransplant, twoTransplant, threeTransplant, setTicketType } = filtersSlice.actions;
 
-export default sidebarSlice.reducer;
+export default filtersSlice.reducer;
