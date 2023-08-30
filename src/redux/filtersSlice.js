@@ -1,37 +1,45 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  all: false,
-  nonStop: false,
-  oneTransplant: false,
-  twoTransplant: false,
-  threeTransplant: false,
+  all: true,
+  nonStop: true,
+  oneTransplant: true,
+  twoTransplant: true,
+  threeTransplant: true,
   types: { cheap: 'cheap', fast: 'fast', optimal: 'optimal' },
-  ticketsType: '',
+  choiceFilters: new Set(['nonStop', 'oneTransplant', 'twoTransplant', 'threeTransplant']),
+  ticketsType: 'cheap',
 };
+
+const allFilters = ['nonStop', 'oneTransplant', 'twoTransplant', 'threeTransplant'];
 
 export const filtersSlice = createSlice({
   name: 'sideBar',
   initialState,
   reducers: {
-    all: (state, action) => {
+    setAll: (state, action) => {
       state.all = !action.payload;
       state.nonStop = !action.payload;
       state.oneTransplant = !action.payload;
       state.twoTransplant = !action.payload;
       state.threeTransplant = !action.payload;
+      !action.payload ? allFilters.forEach((item) => state.choiceFilters.add(item)) : state.choiceFilters.clear();
     },
-    nonStop: (state, action) => {
+    setNonStop: (state, action) => {
       state.nonStop = !action.payload;
+      !action.payload ? state.choiceFilters.add('nonStop') : state.choiceFilters.delete('nonStop');
     },
-    oneTransplant: (state, action) => {
+    setOneTransplant: (state, action) => {
       state.oneTransplant = !action.payload;
+      !action.payload ? state.choiceFilters.add('oneTransplant') : state.choiceFilters.delete('oneTransplant');
     },
-    twoTransplant: (state, action) => {
+    setTwoTransplant: (state, action) => {
       state.twoTransplant = !action.payload;
+      !action.payload ? state.choiceFilters.add('twoTransplant') : state.choiceFilters.delete('twoTransplant');
     },
-    threeTransplant: (state, action) => {
+    setThreeTransplant: (state, action) => {
       state.threeTransplant = !action.payload;
+      !action.payload ? state.choiceFilters.add('threeTransplant') : state.choiceFilters.delete('threeTransplant');
     },
     setTicketType: (state, action) => {
       state.ticketsType = action.payload;
@@ -39,6 +47,7 @@ export const filtersSlice = createSlice({
   },
 });
 
-export const { all, nonStop, oneTransplant, twoTransplant, threeTransplant, setTicketType } = filtersSlice.actions;
+export const { setAll, setNonStop, setOneTransplant, setTwoTransplant, setThreeTransplant, setTicketType } =
+  filtersSlice.actions;
 
 export default filtersSlice.reducer;

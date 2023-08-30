@@ -1,11 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux';
+import propTypes from 'prop-types';
 
 import { setTicketType } from '../../redux/filtersSlice';
 
 import classes from './ticketType.module.scss';
 
 export const TicketType = () => {
-  const types = useSelector((state) => state.root.filters.types);
+  const { cheap, fast, optimal } = useSelector((state) => state.root.filters.types);
+  const { ticketsType } = useSelector((state) => state.root.filters);
   const dispatch = useDispatch();
 
   return (
@@ -15,7 +17,8 @@ export const TicketType = () => {
         name="radio"
         className={classes.ticketTypes__radio}
         id="cheap"
-        onChange={() => dispatch(setTicketType(types.cheap))}
+        onChange={() => dispatch(setTicketType(cheap))}
+        checked={ticketsType === cheap}
       />
       <label htmlFor="cheap" className={classes.ticketTypes__label}>
         Самый дешевый
@@ -25,7 +28,8 @@ export const TicketType = () => {
         name="radio"
         className={classes.ticketTypes__radio}
         id="fast"
-        onChange={() => dispatch(setTicketType(types.fast))}
+        onChange={() => dispatch(setTicketType(fast))}
+        checked={ticketsType === fast}
       />
       <label htmlFor="fast" className={[classes.ticketTypes__label, classes.bordered].join(' ')}>
         Самый быстрый
@@ -35,11 +39,26 @@ export const TicketType = () => {
         name="radio"
         className={classes.ticketTypes__radio}
         id="optimal"
-        onChange={() => dispatch(setTicketType(types.optimal))}
+        onChange={() => dispatch(setTicketType(optimal))}
+        checked={ticketsType === optimal}
       />
       <label htmlFor="optimal" className={classes.ticketTypes__label}>
         Оптимальный
       </label>
     </div>
   );
+};
+
+TicketType.propTypes = {
+  cheap: propTypes.string,
+  fast: propTypes.string,
+  optimal: propTypes.string,
+  ticketsType: propTypes.string,
+};
+
+TicketType.defaultProps = {
+  cheap: 'cheap',
+  fast: 'fast',
+  optimal: 'optimal',
+  ticketsType: '',
 };

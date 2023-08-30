@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import propTypes from 'prop-types';
 
 import classes from './ticket.module.scss';
 
@@ -79,4 +80,12 @@ export const Ticket = ({ item }) => {
       </div>
     </article>
   );
+};
+
+Ticket.propTypes = {
+  item: propTypes.object,
+};
+
+Ticket.defaultProps = {
+  item: {},
 };

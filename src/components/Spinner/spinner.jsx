@@ -5,7 +5,6 @@ import classes from './spinner.module.scss';
 
 export const Spinner = () => {
   const loading = useSelector((state) => state.root.tickets.loading);
-  console.log(loading);
 
   return (
     <div className={classes.spinner}>

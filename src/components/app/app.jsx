@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { fetchTickets } from '../../redux/ticketsSlice';
+import { fetchTickets, loadMore } from '../../redux/ticketsSlice';
 import { Header } from '../Header';
 import { SideBar } from '../SideBar';
 import { TicketList } from '../TicketList';
@@ -26,7 +26,7 @@ export const App = () => {
         <main className="content">
           <TicketType />
           <TicketList />
-          <button type="button" className="button">
+          <button type="button" className="button" onClick={() => dispatch(loadMore(5))}>
             Показать еще 5 билетов!
           </button>
         </main>
