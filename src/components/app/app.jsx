@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchTickets, loadMore } from '../../redux/ticketsSlice';
 import { Header } from '../Header';
@@ -9,6 +9,9 @@ import { TicketType } from '../TicketType/ticketType';
 import { Spinner } from '../Spinner';
 
 export const App = () => {
+  const { copyTickets } = useSelector((state) => state.root.tickets);
+  console.log(copyTickets);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,9 +29,11 @@ export const App = () => {
         <main className="content">
           <TicketType />
           <TicketList />
-          <button type="button" className="button" onClick={() => dispatch(loadMore(5))}>
-            Показать еще 5 билетов!
-          </button>
+          {copyTickets.length !== 0 ? (
+            <button type="button" className="button" onClick={() => dispatch(loadMore(5))}>
+              Показать еще 5 билетов!
+            </button>
+          ) : null}
         </main>
       </div>
     </>
