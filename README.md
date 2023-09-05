@@ -1,1 +1,1 @@
-https://aviasales-mocha-six.vercel.app/
+https://aviasales-liart-psi.vercel.app/
